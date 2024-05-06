@@ -1,13 +1,12 @@
 // const jwt = require('jsonwebtoken');
 
 import jwt from 'jsonwebtoken';
-import Usuario from '../models/usuarios';
+import Usuario from './../models/usuarios.js';
 
 const generarJWT = (uid) => {
     return new Promise((resolve, reject) => {
         const payload = { uid };
         jwt.sign(payload, process.env.SECRETORPRIVATEKEY, {
-            //100 years
             expiresIn: "100y"
 
         }, (err, token) => {
@@ -33,7 +32,7 @@ const validarJWT = async (req, res, next) => {
         let usuario;
 
         const { uid } = jwt.verify(token, process.env.SECRETORPRIVATEKEY)
-        if(!uid){
+        if (!uid) {
             return res.status(401).json({
                 msg: "Error en la petición"
             })
@@ -65,4 +64,4 @@ const validarJWT = async (req, res, next) => {
     }
 }
 
-export {generarJWT, validarJWT}
+export { generarJWT, validarJWT }

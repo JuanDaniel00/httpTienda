@@ -2,6 +2,7 @@ import httpProductos from "./../controllers/productos.js"
 import { Router } from "express"
 import { check } from "express-validator"
 import validarCampos from "./../middlewares/validarCampos.js"
+import { validarJWT } from "../middlewares/validarJWT.js"
 import productosHelpers from "./../helpers/productosHelpers.js"
 
 const router = Router();
@@ -32,7 +33,8 @@ router.post("/insertarProducto", [
     check("cantidad", "La cantidad debe ser un número").isNumeric(),
     check("stockminimo", "El stockMinimo es obligatorio").not().isEmpty(),
     check("stockminimo", "El stockMinimo debe ser un número").isNumeric(),
-    validarCampos
+    validarCampos,
+    validarJWT
 ], httpProductos.insertarProducto)
 // put//modificar
 router.put("/modificarProducto", [
@@ -44,19 +46,22 @@ router.put("/modificarProducto", [
     check("cantidad", "La cantidad debe ser un número").isNumeric(),
     check("stockminimo", "El stockMinimo es obligatorio").not().isEmpty(),
     check("stockminimo", "El stockMinimo debe ser un número").isNumeric(),
-    validarCampos
+    validarCampos,
+    validarJWT
 ], httpProductos.modificarProducto)
 // put//activar
 router.put("/activarProducto/:id", [
     check("id", "El id es obligatorio").not().isEmpty(),
     check("id").custom(productosHelpers.existeProductoId),
-    validarCampos
+    validarCampos,
+    validarJWT
 ], httpProductos.activarProducto)
 // put//desactivar
 router.put("/desactivarProducto/:id", [
     check("id", "El id es obligatorio").not().isEmpty(),
     check("id").custom(productosHelpers.existeProductoId),
-    validarCampos
+    validarCampos,
+    validarJWT
 ], httpProductos.desactivarProducto)
 
 export default router;

@@ -2,6 +2,7 @@ import httpClientes from "./../controllers/clientes.js"
 import { Router } from "express"
 import { check } from "express-validator"
 import validarCampos from "./../middlewares/validarCampos.js"
+import { validarJWT } from "../middlewares/validarJWT.js"
 import clienteHelper from "./../helpers/clientesHelpers.js";
 
 
@@ -29,7 +30,8 @@ router.post("/insertarCliente", [
     check('telefono', 'El telefono debe tener 8 digitos').isLength({ min: 10, max: 15 }),
     check('email', 'El correo es obligatorio').not().isEmpty(),
     check('email', 'El correo no es valido').isEmail(),
-    validarCampos
+    validarCampos,
+    validarJWT
 ], httpClientes.insertarCliente)
 
 // put//modificar
@@ -42,22 +44,24 @@ router.put("/modificarCliente", [
     check('telefono', 'El telefono debe tener 8 digitos').isLength({ min: 10, max: 15 }),
     check('email', 'El correo es obligatorio').not().isEmpty(),
     check('email', 'El correo no es valido').isEmail(),
-    validarCampos
+    validarCampos,
+    validarJWT
 ], httpClientes.modificarCliente)
 // put//activar
 router.put("/activarCliente/:id", [
     check('id', 'El id es obligatorio').not().isEmpty(),
     check('id', 'El id debe ser un numero').isNumeric(),
     check('id').custom(clienteHelper.existeClienteId),
-    validarCampos
-
+    validarCampos,
+    validarJWT
 ], httpClientes.activarCliente)
 // put//desactivar
 router.put("/desactivarCliente/:id", [
     check('id', 'El id es obligatorio').not().isEmpty(),
     check('id', 'El id debe ser un numero').isNumeric(),
     check('id').custom(clienteHelper.existeClienteId),
-    validarCampos
+    validarCampos,
+    validarJWT
 ], httpClientes.desactivarCliente)
 
 export default router;

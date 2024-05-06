@@ -3,6 +3,7 @@ import { Router } from "express"
 import { check } from "express-validator"
 import validarCampos from "./../middlewares/validarCampos.js"
 import ventaHelpers from "./../helpers/ventasHelpers.js"
+import { validarJWT } from "../middlewares/validarJWT.js"
 
 const router = Router();
 
@@ -46,25 +47,29 @@ router.get("/listarTotalDescuento", httpVenta.listarTotalDescuento)
 router.post("/insertarVenta", [
     check("producto", "El producto es obligatorio").not().isEmpty(),
     check("cliente", "El cliente es obligatorio").not().isEmpty(),
-    validarCampos
+    validarCampos,
+    validarJWT
 ], httpVenta.insertarVenta)
 // put//modificar
 router.put("/modificarVenta", [
     check("producto", "El producto es obligatorio").not().isEmpty(),
     check("cliente", "El cliente es obligatorio").not().isEmpty(),
-    validarCampos
+    validarCampos,
+    validarJWT
 ], httpVenta.modificarVenta)
 // put//activar
 router.put("/activarVenta/:id", [
     check('id', 'No es un ID válido').isMongoId(),
     check('id').custom(ventaHelpers.existeVentaId),
-    validarCampos
+    validarCampos,
+    validarJWT
 ], httpVenta.activarVenta)
 // put//desactivar
 router.put("/desactivarVenta/:id", [
     check('id', 'No es un ID válido').isMongoId(),
     check('id').custom(ventaHelpers.existeVentaId),
-    validarCampos
+    validarCampos,
+    validarJWT
 ], httpVenta.desactivarVenta)
 
 export default router;

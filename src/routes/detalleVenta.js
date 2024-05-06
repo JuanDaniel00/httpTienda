@@ -2,6 +2,7 @@ import httpDetalleVenta from "./../controllers/detalleVenta.js"
 import { Router } from "express"
 import { check } from "express-validator"
 import validarCampos from "./../middlewares/validarCampos.js"
+import { validarJWT } from "../middlewares/validarJWT.js"
 import detalleVentaHelpers from "./../helpers/detalleVentaHelpers.js"
 
 const router = Router();
@@ -23,7 +24,8 @@ router.post("/insertarDetalleVenta", [
     check('descuento', 'El descuento es obligatorio').not().isEmpty(),
     check('total', 'El total es obligatorio').not().isEmpty(),
     check('estado', 'El estado es obligatorio').not().isEmpty(),
-    validarCampos
+    validarCampos,
+    validarJWT
 
 ], httpDetalleVenta.insertarDetalleVenta)
 // put//modificar
@@ -34,7 +36,9 @@ router.put("/modificarDetalleVenta", [
     check('descuento', 'El descuento es obligatorio').not().isEmpty(),
     check('total', 'El total es obligatorio').not().isEmpty(),
     check('estado', 'El estado es obligatorio').not().isEmpty(),
-    check('id', 'El id es obligatorio').not().isEmpty()
+    check('id', 'El id es obligatorio').not().isEmpty(),
+    validarCampos,
+    validarJWT
 ], httpDetalleVenta.modificarDetalleVenta)
 
 export default router;
