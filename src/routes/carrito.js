@@ -10,21 +10,19 @@ const router = Router();
 
 router.get("/listarCarritoId/:id", [
     check("id", "El id es obligatorio").not().isEmpty(),
-    check("id", "El id debe ser un número").isNumeric(),
     check("id").custom(carritoHelper.existeCarritoIdValido),
     validarCampos
 ], httpCarrito.listarCarritoId);
 router.post("/insertarCarrito", [
-    check("idUsuario", "El idUsuario es obligatorio").not().isEmpty(),
-    check("idProducto", "El idProducto es obligatorio").not().isEmpty(),
-    check("cantidad", "La cantidad es obligatoria").not().isEmpty(),
-    check("cantidad", "La cantidad debe ser un número").isNumeric(),
+    check("producto", "El producto es obligatorio").not().isEmpty(),
+    check("cliente", "El cliente es obligatorio").not().isEmpty(),
+    check("total", "El total es obligatorio").not().isEmpty(),
+    check("total", "El total debe ser un número").isNumeric(),
     validarCampos,
     validarJWT
 ], httpCarrito.insertarCarrito);
 router.delete("/eliminarCarrito/:id", [
     check("id", "El id es obligatorio").not().isEmpty(),
-    check("id", "El id debe ser un número").isNumeric(),
     check("id").custom(carritoHelper.existeCarritoIdValido),
     validarCampos,
     validarJWT

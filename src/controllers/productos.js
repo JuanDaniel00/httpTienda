@@ -31,7 +31,7 @@ const httpProductos = {
     listarPorPrecio: async (req, res) => {
         // get//listar todos los articulos por encima del precio xxx
         try {
-            const precio = req.body.precio;
+            const precio = req.params.precio;
             const result = await producto.find({ precio: { $gt: precio } });
             res.status(200).json(result);
         } catch (error) {
@@ -57,7 +57,7 @@ const httpProductos = {
     insertarProducto: async (req, res) => {
         try {
             const { nombre, precio, cantidad, stockminimo } = req.body;
-            const nuevoProducto = new producto({ nombre, precio, cantidad, stockminimo });
+            const nuevoProducto = new producto({ nombre, precio, cantidad, stockminimo }); // Eliminar asignación de id
             await nuevoProducto.save();
             res.json({
                 nuevoProducto,
@@ -68,8 +68,9 @@ const httpProductos = {
     },
     modificarProducto: async (req, res) => {
         try {
-            const { id, nombre, precio, cantidad, stockminimo } = req.body;
-            const result = await producto.findByIdAndUpdate(id, { nombre, precio, cantidad, stockminimo });
+            const { id } = req.params;
+            const { nombre, precio, cantidad, stockminimo } = req.body;
+            const result = await producto.findByIdAndUpdate(id, { nombre, precio, cantidad, stockminimo }, { new: true });
             res.status(200).json(result);
         } catch (error) {
             res.status(500).json({ message: error.message });

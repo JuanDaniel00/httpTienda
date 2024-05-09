@@ -1,10 +1,11 @@
 import { Schema, model } from 'mongoose';
 
 const dbVenta = new Schema({
-    producto: { type: Schema.Types.ObjectId, ref: 'producto' },
-    cliente: { type: Schema.Types.ObjectId, ref: 'cliente' },
+    idCliente: { type: Schema.Types.ObjectId, ref: 'cliente' },
+    idDetalleVenta: { type: Schema.Types.ObjectId, ref: 'detalleVenta' },
     fecha: { type: Date, default: Date.now },
     valorTotal: { type: Number, default: 0 },
+    cantidad: { type: Number, default: 0 },
     descuento: { type: Number, default: 0 }
 }, { timestamps: true });
 

@@ -10,17 +10,12 @@ const httpClientes = {
 
     },
     listarPorIdCliente: async (req, res) => {
-        const { id } = req.params
         try {
-            const cliente = await cliente.findById(id)
-            if (cliente)
-                res.json({ cliente })
-            else
-                res.status(400).json({ msg: "Cliente no encontrado" })
+            const result = await cliente.findById(req.params.id)
+            res.json({ result })
         } catch (error) {
             res.status(400).json({ error })
         }
-
     },
     listarClienteActivo: async (req, res) => {
         try {
@@ -42,31 +37,29 @@ const httpClientes = {
     },
     insertarCliente: async (req, res) => {
         try {
-            const { nombre, apellido, email, telefono, direccion, estado } = req.body
-            const cliente = new cliente({ nombre, apellido, email, telefono, direccion, estado })
-            await cliente.save()
-            res.json({ cliente })
+            const { nombre, documento, email, telefono, direccion, estado } = req.body
+            const nuevoCliente = new cliente({ nombre, documento, email, telefono, direccion, estado })
+            await nuevoCliente.save()
+            res.json({ nuevoCliente })
         } catch (error) {
             res.status(400).json({ error })
         }
-
     },
     modificarCliente: async (req, res) => {
         try {
             const { id } = req.params
-            const { nombre, apellido, email, telefono, direccion, estado } = req.body
-            const cliente = await cliente.findByIdAndUpdate(id, { nombre, apellido, email, telefono, direccion, estado })
-            res.json({ cliente })
+            const { nombre, documento, email, telefono, direccion, estado } = req.body
+            const clienteM = await cliente.findByIdAndUpdate(id, { nombre, documento, email, telefono, direccion, estado })
+            res.json({ clienteM })
         } catch (error) {
             res.status(400).json({ error })
         }
-
     },
     activarCliente: async (req, res) => {
         try {
             const { id } = req.params
-            const cliente = await cliente.findByIdAndUpdate(id, { estado: 1 })
-            res.json({ cliente })
+            const clienteActivado = await cliente.findByIdAndUpdate(id, { estado: 1 })
+            res.json({ clienteActivado })
         } catch (error) {
             res.status(400).json({ error })
         }
@@ -75,12 +68,11 @@ const httpClientes = {
     desactivarCliente: async (req, res) => {
         try {
             const { id } = req.params
-            const cliente = await cliente.findByIdAndUpdate(id, { estado: 0 })
-            res.json({ cliente })
+            const clienteDesactivado = await cliente.findByIdAndUpdate(id, { estado: 0 })
+            res.json({ clienteDesactivado })
         } catch (error) {
             res.status(400).json({ error })
         }
-
     }
 }
 

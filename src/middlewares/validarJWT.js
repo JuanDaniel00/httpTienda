@@ -1,5 +1,3 @@
-// const jwt = require('jsonwebtoken');
-
 import jwt from 'jsonwebtoken';
 import Usuario from './../models/usuarios.js';
 
@@ -21,7 +19,7 @@ const generarJWT = (uid) => {
 }
 
 const validarJWT = async (req, res, next) => {
-    const token = req.header("x-token");
+    const token = req.header("Authorization");
     if (!token) {
         return res.status(401).json({
             msg: "Error en la petición"

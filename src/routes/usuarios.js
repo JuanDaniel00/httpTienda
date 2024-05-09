@@ -15,15 +15,16 @@ router.get("/listarPorIdUsuario/:id", [
     check('id').custom(usuarioHelper.existeUsuarioID),
     validarCampos
 ], httpUsuarios.listarPorIdUsuario)
-// listar activos, listar inactivos
+// listar activos, 
+
 router.get("/listarUsuarioActivo", httpUsuarios.listarUsuarioActivo)
+//listar inactivos
+router.get("/listarUsuarioInactivo", httpUsuarios.listarUsuarioInactivo)
 // post//insertar
 router.post("/insertarUsuario", [
     check('email', 'El documento es obligatorio!').not().isEmpty(),
-
     check('email').custom(usuarioHelper.existeEmail),
     check('password', 'Password es muy corto').isLength({ min: 8 }),
-    check('password', 'Password es muy largo').isLength({ max: 15 }),
     validarCampos
 ], httpUsuarios.insertarUsuario)
 // post//login
@@ -32,9 +33,6 @@ router.post("/login", [
     check("password", "La contraseña es obligatoria").not().isEmpty(),
     validarCampos
 ], httpUsuarios.login)
-
-
-
 
 // post //cambio contraseña
 router.post("/cambioContrasena", [

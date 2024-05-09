@@ -1,6 +1,6 @@
 import usuario from "../models/usuarios.js";
 import bcryptjs from "bcryptjs";
-
+import { generarJWT } from "./../middlewares/validarJWT.js";
 
 const httpUsuarios = {
   listarTodosUsuarios: async (req, res) => {
@@ -27,6 +27,14 @@ const httpUsuarios = {
       res.status(500).json({ message: error.message });
     }
   },
+  listarUsuarioInactivo: async (req, res) => {
+    try {
+      const result = await usuario.find({ estado: 0 });
+      res.status(200).json(result);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  },
   insertarUsuario: async (req, res) => {
     try {
       const { email, password } = req.body;
@@ -34,7 +42,6 @@ const httpUsuarios = {
 
       const salt = bcryptjs.genSaltSync();
       nuevoUsuario.password = bcryptjs.hashSync(password, salt);
-
       await nuevoUsuario.save();
 
       res.json({
@@ -61,18 +68,16 @@ const httpUsuarios = {
         return res.status(400).json({ message: "Usuario inactivo" });
       }
 
-      if (result) {
-        return res.status(200).json({ message: "Login correcto" });
-      }
-
       const tokenLog = await generarJWT(result._id);
 
       res.json({
         usuario: result,
-        tokenLog
+        tokenLog,
+        message: "Login correcto"
       });
     } catch (error) {
-      return res.status(500).json({ message: "Error en el servidor" });
+      console.log(error.message);
+      res.status(500).json({ message: "Error en el servidor" });
     }
   },
   cambioContrasena: async (req, res) => {
@@ -92,15 +97,22 @@ const httpUsuarios = {
     }
   },
   modificarUsuario: async (req, res) => {
-    try{
+    try {
+      const { email, password } = req.body;
+
+      // Encriptar la contraseña
+      const salt = bcryptjs.genSaltSync();
+      const passwordEncriptada = bcryptjs.hashSync(password, salt);
+
       const result = await usuario.findByIdAndUpdate(
         req.params.id,
-        req.body,
+        { email, password: passwordEncriptada }, // Guardar la contraseña encriptada
         { new: true }
       );
-      res.status(200).json(result);
 
-    } catch (error) {
+      res.status(200).json(result);
+    }
+    catch (error) {
       res.status(500).json({ message: error.message });
     }
   },

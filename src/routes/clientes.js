@@ -11,9 +11,8 @@ const router = Router();
 // router.get()//listar todo
 router.get("/listarTodosClientes", httpClientes.listarTodosClientes)
 // get//listar por un id
-router.get("/listarPorIdCliente", [
+router.get("/listarPorIdCliente/:id", [
     check('id', 'El id es obligatorio').not().isEmpty(),
-    check('id', 'El id debe ser un numero').isNumeric(),
     check('id').custom(clienteHelper.existeClienteId),
     validarCampos
 ], httpClientes.listarPorIdCliente)
@@ -24,7 +23,7 @@ router.get("/listarClienteInactivo", httpClientes.listarClienteInactivo)
 router.post("/insertarCliente", [
     check('nombre', 'El nombre es obligatorio').not().isEmpty(),
     check('documento', 'El documento es obligatorio').not().isEmpty(),
-    check('documento', 'El documento debe tener maximo 15 digitos').isLength({ max: 15 }),
+    check('documento', 'El documento debe tener maximo 10 digitos').isLength({ max: 10 }),
     check('direccion', 'La direccion es obligatoria').not().isEmpty(),
     check('telefono', 'El telefono es obligatorio').not().isEmpty(),
     check('telefono', 'El telefono debe tener 8 digitos').isLength({ min: 10, max: 15 }),
@@ -35,7 +34,8 @@ router.post("/insertarCliente", [
 ], httpClientes.insertarCliente)
 
 // put//modificar
-router.put("/modificarCliente", [
+router.put("/modificarCliente/:id", [
+    check('id', 'El id es obligatorio').not().isEmpty(),
     check('nombre', 'El nombre es obligatorio').not().isEmpty(),
     check('documento', 'El documento es obligatorio').not().isEmpty(),
     check('documento', 'El documento debe tener maximo 15 digitos').isLength({ max: 15 }),
@@ -50,7 +50,6 @@ router.put("/modificarCliente", [
 // put//activar
 router.put("/activarCliente/:id", [
     check('id', 'El id es obligatorio').not().isEmpty(),
-    check('id', 'El id debe ser un numero').isNumeric(),
     check('id').custom(clienteHelper.existeClienteId),
     validarCampos,
     validarJWT
@@ -58,7 +57,6 @@ router.put("/activarCliente/:id", [
 // put//desactivar
 router.put("/desactivarCliente/:id", [
     check('id', 'El id es obligatorio').not().isEmpty(),
-    check('id', 'El id debe ser un numero').isNumeric(),
     check('id').custom(clienteHelper.existeClienteId),
     validarCampos,
     validarJWT

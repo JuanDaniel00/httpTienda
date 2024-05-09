@@ -18,7 +18,7 @@ router.get("/listarPorIdProducto/:id", [
 // get//liste todos los productos por debajo stockminimo
 router.get("/listarPorStockMinimo", httpProductos.listarPorStockMinimo)
 // get//listar todos los articulos por encima del precio xxx
-router.get("/listarPorPrecio", httpProductos.listarPorPrecio)
+router.get("/listarPorPrecio/:precio", httpProductos.listarPorPrecio)
 // listar activos, 
 router.get("/listarProductoActivo", httpProductos.listarProductoActivo)
 // listar inactivos
@@ -37,7 +37,9 @@ router.post("/insertarProducto", [
     validarJWT
 ], httpProductos.insertarProducto)
 // put//modificar
-router.put("/modificarProducto", [
+router.put("/modificarProducto/:id", [
+    check("id", "El id es obligatorio").not().isEmpty(),
+    check("id").custom(productosHelpers.existeProductoId),
     check("nombre", "El nombre es obligatorio").not().isEmpty(),
     check("nombre", "El nombre es demasiado largo").isLength({ max: 42 }),
     check("precio", "El precio es obligatorio").not().isEmpty(),
