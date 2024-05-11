@@ -1,12 +1,11 @@
-import venta from "./../controllers/venta.js";
+import venta from "./../models/venta.js";
 
 const ventaHelper = {
     existeVentaId: async (id, req) => {
-        const existe = await venta.findOne(id)
-        if (!existe) {
-            throw new Error(`Registro no existe ${id}`)
+        const existeVenta = await venta.findById(id);
+        if (!existeVenta) {
+            throw new Error(`El idVenta: ${id} no existe`);
         }
-        req.req.ventabd = existe
     }
 }
 

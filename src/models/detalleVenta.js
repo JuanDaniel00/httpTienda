@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose';
 
 const dbDetalleVenta = new Schema({
-    id: { type:Schema.Types.ObjectId, ref: 'cliente'},
+    idCliente: { type: Schema.Types.ObjectId, ref: 'cliente' },
     fecha: { type: Date, default: Date.now },
     valor: { type: Number, default: 0 },
 }, { timestamps: true });

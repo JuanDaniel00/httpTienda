@@ -2,11 +2,10 @@ import detalleVenta from "./../models/detalleVenta.js";
 
 const detalleVentaHelper = {
     existeDetalleVentaId: async (id, req) => {
-        const existe = await detalleVenta.findOne(id)
-        if (!existe) {
-            throw new Error(`Registro no existe ${id}`)
+        const existeDetalleVenta = await detalleVenta.findById(id);
+        if (!existeDetalleVenta) {
+            throw new Error(`El idDetalleVenta: ${id} no existe`);
         }
-        req.req.detalleVentabd = existe
     }
 }
 

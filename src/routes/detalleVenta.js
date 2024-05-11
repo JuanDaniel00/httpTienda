@@ -10,33 +10,27 @@ const router = Router();
 // get//listar por un id venta
 router.get("/listarIdDetalleVenta/:id", [
     check('id', 'El idVenta es obligatorio').not().isEmpty(),
-    check('id', 'El idVenta debe ser un número').isNumeric(),
     check('id').custom(detalleVentaHelpers.existeDetalleVentaId),
     validarCampos
-
 ], httpDetalleVenta.listarIdDetalleVenta)
 // post//insertar
 router.post("/insertarDetalleVenta", [
-    check('id', 'El idVenta es obligatorio').not().isEmpty(),
-    check('idProducto', 'El idProducto es obligatorio').not().isEmpty(),
-    check('cantidad', 'La cantidad es obligatoria').not().isEmpty(),
-    check('precio', 'El precio es obligatorio').not().isEmpty(),
-    check('descuento', 'El descuento es obligatorio').not().isEmpty(),
-    check('total', 'El total es obligatorio').not().isEmpty(),
-    check('estado', 'El estado es obligatorio').not().isEmpty(),
+    check('idCliente', 'El idCliente es obligatorio').not().isEmpty(),
+    check('fecha', 'La fecha es obligatoria').not().isEmpty(),
+    check('valor', 'El valor es obligatorio').not().isEmpty(),
     validarCampos,
     validarJWT
 
 ], httpDetalleVenta.insertarDetalleVenta)
 // put//modificar
-router.put("/modificarDetalleVenta", [
-    check('idProducto', 'El idProducto es obligatorio').not().isEmpty(),
-    check('cantidad', 'La cantidad es obligatoria').not().isEmpty(),
-    check('precio', 'El precio es obligatorio').not().isEmpty(),
-    check('descuento', 'El descuento es obligatorio').not().isEmpty(),
-    check('total', 'El total es obligatorio').not().isEmpty(),
-    check('estado', 'El estado es obligatorio').not().isEmpty(),
-    check('id', 'El id es obligatorio').not().isEmpty(),
+router.put("/modificarDetalleVenta/:id", [
+    check('id', 'El idVenta es obligatorio').not().isEmpty(),
+    check('id').custom(detalleVentaHelpers.existeDetalleVentaId),
+    check('idCliente', 'El idCliente es obligatorio').not().isEmpty(),
+    check('fecha', 'La fecha es obligatoria').not().isEmpty(),
+    check('valor', 'El valor es obligatorio').not().isEmpty(),
+    check('id').custom(detalleVentaHelpers.existeDetalleVentaId),
+    check('valor', "El valor debe ser un número").isNumeric(),
     validarCampos,
     validarJWT
 ], httpDetalleVenta.modificarDetalleVenta)
